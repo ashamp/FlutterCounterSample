@@ -18,10 +18,9 @@ class CounterSample extends StatelessWidget {
           child: Center(
             child: ChangeNotifierProvider<CounterBloc>(
               builder: (context) => CounterBloc(),
-              child: Selector<CounterBloc, int>(
+              child: Selector<CounterBloc, int>(//使用Selector,可以只观察
                 selector: (context, bloc) => bloc.countDown,
                 builder: (context, countDown, child) {
-                  CounterBloc bloc = Provider.of<CounterBloc>(context, listen: false);
                   return GestureDetector(
                     child: Container(
                       width: 100,
@@ -34,6 +33,7 @@ class CounterSample extends StatelessWidget {
                     ),
                     onTap: countDown == 0
                         ? () {
+                            CounterBloc bloc = Provider.of<CounterBloc>(context, listen: false); //取bloc用于调用sendVerifyCode方法,这里无须lister
                             bloc.sendVerifyCode(context);
                           }
                         : null,
